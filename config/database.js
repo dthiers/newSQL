@@ -1,17 +1,25 @@
 
-module.exports = function(newsql){
-  var  options = {
-    dbConfig: {
-        "host"     : "127.0.0.1",
-        "database" : "API_Test",
-        "user"     : "root",
-        "password" : "root",
-        "port"     : 8889,
-        "supportBigNumbers" : true,
-        "connectionLimit"   : 32
-    },
-    "autoConvert": true
- };
+module.exports = function(newsql, dbConfig){
+  var self = this;
 
- newsql.config(options);
+  // Repository paths. Name used as key to reference the repository.
+  var repositoryPaths = [
+    { name: "user", path: "../lib/repositories/userRepository" }
+  ]
+
+  self.initRepositories = function(){
+    if(!self.repositories){
+      self.repositories = {};
+    }
+    for(var i = 0; i < repositoryPaths.length; i++){
+      var Repo = require(repositoryPaths[i].path);
+      self.repositories[repositoryPaths[i].name] = new Repo(newsql);
+    }
+  }
+
+  // Init all the repositories
+  self.initRepositories();
+
+  // Init NewSQL
+  newsql.config(dbConfig);
 }
