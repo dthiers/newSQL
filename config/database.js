@@ -1,5 +1,7 @@
 
-module.exports = function(newsql, dbConfig){
+module.exports = function(newsql, config){
+  console.log("WE KOMEN IN DE DATABASE");
+  console.log(typeof dbConfig);
   var self = this;
 
   // Repository paths. Name used as key to reference the repository.
@@ -21,5 +23,6 @@ module.exports = function(newsql, dbConfig){
   self.initRepositories();
 
   // Init NewSQL
-  newsql.config(dbConfig);
+  newsql.config(config.databaseTijn); // comment for local-dev
+  // new.config(config.database);   // uncomment for local-dev
 }
